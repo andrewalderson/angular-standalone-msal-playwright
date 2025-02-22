@@ -8,6 +8,12 @@
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
+	// Need to set the network to the host or the apps won't be accessible outside the container
+	// We could also set the host on the ng serve or storybook command in the project.json file but since this is a devcontainer
+	// specific issue we are setting it here.
+	"runArgs": [
+		"--network=host"
+	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "npm install && npx playwright install --with-deps",
 	// Configure tool-specific properties.

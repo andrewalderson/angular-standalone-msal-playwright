@@ -109,7 +109,7 @@ setup('msal-login', async ({ request, page }) => {
   await page.goto('/');
 
   const sessionStorage: string = await page.evaluate(() =>
-    JSON.stringify(sessionStorage)
+    JSON.stringify(window.sessionStorage)
   );
   writeFileSync(SESSION_STORAGE_STATE, sessionStorage, 'utf-8');
 });

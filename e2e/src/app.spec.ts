@@ -11,6 +11,7 @@ test.describe('user is not authenticated', () => {
 
     await page.waitForEvent('framenavigated');
 
+    // eslint-disable-next-line playwright/no-conditional-in-test
     const expectedUrl = process.env['MSAL_AUTHORITY'] || '';
 
     expect(page.url()).toMatch(expectedUrl);

@@ -1,3 +1,4 @@
+import parser from "@typescript-eslint/parser";
 import playwright from 'eslint-plugin-playwright';
 
 export default [
@@ -6,6 +7,8 @@ export default [
     files: ['**/*.ts', '**/*.js'],
     // Override or add rules here
     rules: {},
-    ignores: ["**/*.ts"], // this is temporary because eslint doesn't like some of the typescript syntax - need to investigate
+    languageOptions: {
+      parser
+    }
   },
 ];

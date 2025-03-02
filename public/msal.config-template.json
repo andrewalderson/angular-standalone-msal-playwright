@@ -1,0 +1,41 @@
+{
+    "auth": {
+        "clientId": "{your-client-id}",
+        "authority": "https://login.microsoftonline.com/common",
+        "redirectUri": "/_signin-callback",
+        "postLogoutRedirectUri": "/_signed-out",
+        "navigateToLoginRequestUrl": true,
+        "knownAuthorities": []
+    },
+    "cache": {
+        "cacheLocation": "sessionStorage",
+        "storeAuthStateInCookie": false
+    },
+    "system": {
+        "allowNativeBroker": false,
+        "loggerOptions": {
+            "logLevel": 2,
+            "piiLoggingEnabled": false
+        }
+    },
+    "guard": {
+        "interactionType": "redirect",
+        "authRequest": {
+            "scopes": [
+                "user.read"
+            ]
+        },
+        "loginFailedRoute": "/_login-failed"
+    },
+    "interceptor": {
+        "interactionType": "redirect",
+        "protectedResourceMap": [
+            [
+                "https://graph.microsoft.com/v1.0/me",
+                [
+                    "user.read"
+                ]
+            ]
+        ]
+    }
+}

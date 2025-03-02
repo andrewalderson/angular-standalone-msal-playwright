@@ -42,3 +42,7 @@ Thumbs.db
 .nx/workspace-data
 
 .angular
+
+msal.config.json
+.env
+e2e/.session

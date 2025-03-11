@@ -1,6 +1,7 @@
 import { Authority, ProtocolMode, ScopeSet } from '@azure/msal-common/browser';
 import { test as setup } from '@playwright/test';
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
 import {
   acquireTokenWithUsernameAndPassword,
   createCachableAccessToken,
@@ -114,5 +115,9 @@ setup('msal-login', async ({ request, page }) => {
   const sessionStorage: string = await page.evaluate(() =>
     JSON.stringify(window.sessionStorage)
   );
+  const dir = path.dirname(sessionStorageFilePath);
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
   writeFileSync(sessionStorageFilePath, sessionStorage, 'utf-8');
 });

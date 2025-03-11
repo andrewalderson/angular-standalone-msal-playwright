@@ -2,6 +2,7 @@ import { Authority, ProtocolMode, ScopeSet } from '@azure/msal-common/browser';
 import { test as setup } from '@playwright/test';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { tryGetEnviromentVariable } from '../utils';
 import {
   acquireTokenWithUsernameAndPassword,
   createCachableAccessToken,
@@ -10,7 +11,9 @@ import {
   createCachableRefreshToken,
 } from './token-helpers';
 
-const sessionStorageFilePath = process.env['SESSION_STORAGE_FILE_PATH'] || '';
+const sessionStorageFilePath = tryGetEnviromentVariable(
+  'SESSION_STORAGE_FILE_PATH'
+);
 
 setup.skip(
   existsSync(
@@ -18,20 +21,15 @@ setup.skip(
   ) /*&& !fileOlderThan(sessionStorageFilePath, "1h"*/
 );
 setup('msal-login', async ({ request, page }) => {
-  const username = process.env['MSAL_USERNAME'] || '';
-  const password = process.env['MSAL_PASSWORD'] || '';
-  const clientId = process.env['MSAL_CLIENT_ID'] || '';
-  const authority = process.env['MSAL_AUTHORITY'] || '';
-
-  setup.skip(
-    !username || !password || !clientId || !authority,
-    'MSAL_USERNAME, MSAL_PASSWORD, MSAL_CLIENT_ID, and MSAL_AUTHORITY must be set in the .env file'
-  );
+  const username = tryGetEnviromentVariable('MSAL_USERNAME');
+  const password = tryGetEnviromentVariable('MSAL_PASSWORD');
+  const clientId = tryGetEnviromentVariable('MSAL_CLIENT_ID');
+  const authority = tryGetEnviromentVariable('MSAL_AUTHORITY');
 
   // only scopes for api calls should be passed in
   // if no scopes are passed in we need to send the client id as a scope
   // as either an api scope or the client id is required
-  const scopes = process.env['MSAL_SCOPES'] || clientId;
+  const scopes = tryGetEnviromentVariable('MSAL_SCOPES', clientId);
 
   const externalTokenResponse = await acquireTokenWithUsernameAndPassword(
     request,

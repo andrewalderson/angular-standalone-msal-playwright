@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
 import type { SessionStorageState } from 'e2e/playwright.config';
 import { readFileSync } from 'fs';
+import { tryGetEnviromentVariable } from './utils';
 
 export const test = base.extend<
   {
@@ -14,14 +15,8 @@ export const test = base.extend<
   forEachTest: [
     async ({ page }, use) => {
       // this code runs before each test.
-      const clientId = process.env['MSAL_CLIENT_ID'] || '';
-      const authority = process.env['MSAL_AUTHORITY'] || '';
-
-      if (!clientId || !authority) {
-        console.warn(
-          'MSAL_CLIENT_ID, and MSAL_AUTHORITY must be set in the .env file'
-        );
-      }
+      const clientId = tryGetEnviromentVariable('MSAL_CLIENT_ID');
+      const authority = tryGetEnviromentVariable('MSAL_AUTHORITY');
 
       await page.route('**/msal.config.json', async (route) => {
         const response = await route.fetch();

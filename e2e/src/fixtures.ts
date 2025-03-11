@@ -9,8 +9,8 @@ export const test = base.extend<
   } & SessionStorageState
 >({
   // make this an empty string and override it in the playwright config - in the use block globally or in each project
-  // if a test needs an unauthenticated user they can use 'test.use({sessionStoragePath: ''})'
-  sessionStoragePath: ['', { option: true }],
+  // if a test needs an unauthenticated user they can use 'test.use({sessionStorageFilePath: ''})'
+  sessionStorageFilePath: ['', { option: true }],
   forEachTest: [
     async ({ page }, use) => {
       // this code runs before each test.
@@ -41,16 +41,16 @@ export const test = base.extend<
     },
     { auto: true },
   ],
-  context: async ({ context, baseURL, sessionStoragePath }, use) => {
+  context: async ({ context, baseURL, sessionStorageFilePath }, use) => {
     // this code runs whenever a context is created
-    if (!sessionStoragePath) {
+    if (!sessionStorageFilePath) {
       console.log('sessionStorage not set: skipping init script');
     } else if (!baseURL) {
       console.warn(
         'baseURL is not set; skipping session storage restoration init script'
       );
     } else {
-      const sessionStorageState = readFileSync(sessionStoragePath, 'utf-8');
+      const sessionStorageState = readFileSync(sessionStorageFilePath, 'utf-8');
       const sessionStorageEntries = Object.entries(
         JSON.parse(sessionStorageState) as Record<string, string>
       );

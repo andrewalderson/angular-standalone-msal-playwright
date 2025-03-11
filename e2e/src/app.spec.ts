@@ -4,7 +4,7 @@ import { test } from './fixtures';
 test.describe('user is not authenticated', () => {
   // this demonstrates how to start the tests with an unauthenticated user
   // if we don't pass a path for the sesion storage the auth tokens will not be set in sessionStorage
-  test.use({ sessionStoragePath: '' });
+  test.use({ sessionStorageFilePath: '' });
 
   test('should be redirected to the login page', async ({ page }) => {
     await page.goto('/');

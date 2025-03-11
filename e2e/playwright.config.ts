@@ -20,7 +20,7 @@ process.env['SESSION_STORAGE_FILE_PATH'] = SESSION_STORAGE_FILE_PATH;
 // require('dotenv').config();
 
 // Config value to use for passing session storage state to tests or fixtures
-export type SessionStorageState = { sessionStoragePath: string };
+export type SessionStorageState = { sessionStorageFilePath: string };
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -49,7 +49,7 @@ export default defineConfig<SessionStorageState>({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
+        sessionStorageFilePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },
@@ -57,7 +57,7 @@ export default defineConfig<SessionStorageState>({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
+        sessionStorageFilePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },
@@ -65,7 +65,7 @@ export default defineConfig<SessionStorageState>({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
-        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
+        sessionStorageFilePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },

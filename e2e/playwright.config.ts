@@ -6,10 +6,12 @@ import path from 'path';
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
 
-export const SESSION_STORAGE_STATE = path.join(
+export const SESSION_STORAGE_FILE_PATH = path.join(
   __dirname,
   '.session/state.json'
 );
+
+process.env['SESSION_STORAGE_FILE_PATH'] = SESSION_STORAGE_FILE_PATH;
 
 /**
  * Read environment variables from file.
@@ -47,7 +49,7 @@ export default defineConfig<SessionStorageState>({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        sessionStoragePath: SESSION_STORAGE_STATE,
+        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },
@@ -55,7 +57,7 @@ export default defineConfig<SessionStorageState>({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        sessionStoragePath: SESSION_STORAGE_STATE,
+        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },
@@ -63,7 +65,7 @@ export default defineConfig<SessionStorageState>({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
-        sessionStoragePath: SESSION_STORAGE_STATE,
+        sessionStoragePath: SESSION_STORAGE_FILE_PATH,
       },
       dependencies: ['setup'],
     },

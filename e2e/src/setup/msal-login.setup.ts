@@ -1,6 +1,5 @@
 import { Authority, ProtocolMode, ScopeSet } from '@azure/msal-common/browser';
 import { test as setup } from '@playwright/test';
-import { SESSION_STORAGE_STATE } from 'e2e/playwright.config';
 import { existsSync, writeFileSync } from 'node:fs';
 import {
   acquireTokenWithUsernameAndPassword,
@@ -10,8 +9,12 @@ import {
   createCachableRefreshToken,
 } from './token-helpers';
 
+const sessionStorageFilePath = process.env['SESSION_STORAGE_FILE_PATH'] || '';
+
 setup.skip(
-  existsSync(SESSION_STORAGE_STATE) /*&& !fileOlderThan(storageFilePath, "1h"*/
+  existsSync(
+    sessionStorageFilePath
+  ) /*&& !fileOlderThan(sessionStorageFilePath, "1h"*/
 );
 setup('msal-login', async ({ request, page }) => {
   const username = process.env['MSAL_USERNAME'] || '';
@@ -111,5 +114,5 @@ setup('msal-login', async ({ request, page }) => {
   const sessionStorage: string = await page.evaluate(() =>
     JSON.stringify(window.sessionStorage)
   );
-  writeFileSync(SESSION_STORAGE_STATE, sessionStorage, 'utf-8');
+  writeFileSync(sessionStorageFilePath, sessionStorage, 'utf-8');
 });

@@ -8,7 +8,7 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
 
 export const SESSION_STORAGE_FILE_PATH = path.join(
   __dirname,
-  '.session/state.json'
+  '.state/session-storage.json'
 );
 
 process.env['SESSION_STORAGE_FILE_PATH'] = SESSION_STORAGE_FILE_PATH;

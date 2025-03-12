@@ -45,4 +45,4 @@ Thumbs.db
 
 msal.config.json
 .env
-e2e/.session
+e2e/.state

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { take } from 'rxjs';
 
 @Component({
   selector: 'app-nx-welcome',
-  imports: [CommonModule],
+  imports: [],
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *

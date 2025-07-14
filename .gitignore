@@ -46,3 +46,5 @@ Thumbs.db
 msal.config.json
 .env
 e2e/.state
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

@@ -17,7 +17,7 @@ process.env['SESSION_STORAGE_FILE_PATH'] = SESSION_STORAGE_FILE_PATH;
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 // Config value to use for passing session storage state to tests or fixtures
 export type SessionStorageState = { sessionStorageFilePath: string };

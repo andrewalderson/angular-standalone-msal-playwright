@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import { bootstrapApplication } from '@angular/platform-browser';
 import { MsalRedirectComponent } from '@azure/msal-angular';
 import { AppComponent } from './app/app.component';
@@ -30,7 +31,7 @@ import { environment } from './environments/environment';
  */
 bootstrapMsalProviders(environment.msalConfigUrl).then((msalProviders) =>
   bootstrapApplication(AppComponent, {
-    providers: [appConfig.providers, msalProviders],
+    providers: [provideZoneChangeDetection(),appConfig.providers, msalProviders],
   })
     // this needs to be done because the MsalRedirectComponent is added to the index.html page
     // not adding this will cause the app to freeze at the signin-callback page after authentication

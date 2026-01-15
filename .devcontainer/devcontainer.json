@@ -1,43 +1,44 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-	"name": "Node.js & TypeScript",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// Need to set the network to the host or the apps won't be accessible outside the container
-	// We could also set the host on the ng serve or storybook command in the project.json file but since this is a devcontainer
-	// specific issue we are setting it here.
-	"runArgs": [
-		"--network=host"
-	],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install && npx playwright install --with-deps",
-	// Configure tool-specific properties.
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"nrwl.angular-console",
-				"esbenp.prettier-vscode",
-				"dbaeumer.vscode-eslint",
-				"firsttris.vscode-jest-runner",
-				"ms-playwright.playwright"
-			],
-			"settings": {
-				"editor.codeActionsOnSave": {
-					"source.organizeImports": "always",
-					"source.fixAll": "always"
-				},
-				"editor.formatOnSave": true,
-				"git.inputValidation": true,
-				"git.inputValidationSubjectLength": 50,
-				"git.inputValidationLength": 72
-			}
-		}
-	}
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  "name": "Node.js & TypeScript",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/tailscale/codespace/tailscale": {}
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Need to set the network to the host or the apps won't be accessible outside the container
+  // We could also set the host on the ng serve or storybook command in the project.json file but since this is a devcontainer
+  // specific issue we are setting it here.
+  // "runArgs": [
+  // 	"--network=host"
+  // ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "npm install && npx playwright install --with-deps",
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "nrwl.angular-console",
+        "prettier.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "firsttris.vscode-jest-runner",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "prettier.prettier-vscode",
+        "editor.formatOnSave": true,
+        "prettier.requireConfig": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "always",
+          "source.organizeImports": "explicit"
+        }
+      }
+    }
+  }
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }

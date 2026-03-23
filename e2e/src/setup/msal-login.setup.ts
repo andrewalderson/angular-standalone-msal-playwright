@@ -1,32 +1,8 @@
 import { workspaceRoot } from '@nx/devkit';
 import { test as setup } from '@playwright/test';
-import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
-import { tryGetEnviromentVariable } from '../utils';
-
-function fileOlderThan(filePath: string, durationMs: number) {
-  try {
-    // Ensure file exists
-    if (!existsSync(filePath)) {
-      throw new Error(`File not found: ${filePath}`);
-    }
-
-    // Get file stats
-    const stats = statSync(filePath);
-
-    // Last modification time
-    const mtime = stats.mtime.getTime();
-
-    // Current time
-    const now = Date.now();
-
-    // Compare age
-    return now - mtime > durationMs;
-  } catch (err: any) {
-    console.error(`Error checking file age: ${err.message}`);
-    return false;
-  }
-}
+import { fileOlderThan, tryGetEnviromentVariable } from '../utils';
 
 const sessionStorageFilePath = tryGetEnviromentVariable(
   'SESSION_STORAGE_FILE_PATH',

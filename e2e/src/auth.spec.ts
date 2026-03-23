@@ -10,6 +10,7 @@ import { test } from './fixtures';
  */
 test.describe('Auth routes', () => {
   let config: any;
+
   test.beforeEach(async ({ page }) => {
     const reponsePromise = page.waitForResponse('**/msal.config.json');
     await page.goto('/');
@@ -22,6 +23,7 @@ test.describe('Auth routes', () => {
   }) => {
     await expect(page.locator('app-redirect')).toBeAttached();
   });
+
   test('should be able to route to the sign in redirect page', async ({
     page,
   }) => {

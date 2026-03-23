@@ -84,24 +84,24 @@ setup('msal-login', async ({ request, page }) => {
 
   // Have the msal browser library add the tokens to browser storage
   // Doing it this way will ensure that the browser storage keys have the correct schema
-  await page.evaluate(
+  const sessionStorage: string = await page.evaluate(
     async ({ tokenResponse, authority, clientId, scopes }) => {
-      const pca = await (
-        window as any
-      ).msal.PublicClientApplication.createPublicClientApplication({
-        auth: { authority, clientId },
-      });
-      await pca
-        .getTokenCache()
-        .loadExternalTokens({ authority, scopes }, tokenResponse, {
-          extendedExpiresOn: tokenResponse.expires_in,
-        });
+      await (window as any).msal.loadExternalTokens(
+        {
+          auth: {
+            authority,
+            clientId,
+          },
+        },
+        { authority, scopes },
+        tokenResponse,
+        {},
+      );
+      // read and return the tokens added to sessionStorage by 'loadExternalTokens'
+      // sessionStorage is set as the cache location in the msal config (see ../fixtures.ts)
+      return JSON.stringify(window.sessionStorage);
     },
     { tokenResponse, authority, clientId, scopes },
-  );
-
-  const sessionStorage: string = await page.evaluate(() =>
-    JSON.stringify(window.sessionStorage),
   );
 
   const dir = path.dirname(sessionStorageFilePath);

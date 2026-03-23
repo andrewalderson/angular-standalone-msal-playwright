@@ -1,3 +1,4 @@
+import { workspaceRoot } from '@nx/devkit';
 import { test as setup } from '@playwright/test';
 import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
@@ -67,12 +68,12 @@ setup('msal-login', async ({ request, page }) => {
   // causing calls in the msal browser library to window.crypto.subtle to fail
   await page.goto('/');
 
-  // Need to add the msal-browser library to the page so we can instantiate a PublicCLientApplication below
+  // Need to add the msal-browser library to the page so we can load the tokens into the cache below
   // We use the version from node_modules so there are no version mismatches and becuase new version
   // of the library are no longer available on the Microsoft CDN
-  const moduleFile = path.resolve(
-    __dirname,
-    '../../../node_modules/@azure/msal-browser/lib/msal-browser.min.js',
+  const moduleFile = path.join(
+    workspaceRoot,
+    'node_modules/@azure/msal-browser/lib/msal-browser.min.js',
   );
 
   // Add the msal browser script to the page

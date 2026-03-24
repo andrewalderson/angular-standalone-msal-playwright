@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import type { SessionStorageState } from 'e2e/playwright.config';
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import { tryGetEnviromentVariable } from './utils';
 
 export const test = base.extend<

@@ -14,7 +14,7 @@ setup.skip(
   existsSync(sessionStorageFilePath) &&
     !fileOlderThan(sessionStorageFilePath, hourInMilliseconds),
 );
-setup('msal-login', async ({ request, page }) => {
+setup('msal-login', async ({ page }) => {
   const username = tryGetEnviromentVariable('MSAL_USERNAME');
   const password = tryGetEnviromentVariable('MSAL_PASSWORD');
   const clientId = tryGetEnviromentVariable('MSAL_CLIENT_ID');
@@ -25,19 +25,27 @@ setup('msal-login', async ({ request, page }) => {
   // as either an api scope or the client id is required
   const scopes = tryGetEnviromentVariable('MSAL_SCOPES', clientId);
 
-  const tokenRequest = await request.post(`${authority}/oauth2/v2.0/token`, {
-    form: {
-      grant_type: 'password',
-      client_id: clientId,
-      username,
-      password,
-      scope: `openid offline_access ${scopes}`,
-      response_type: 'token id_token',
-      client_info: 1, // this is undocumented but needs to be set to return client_info in the ExternalTokenResponse when caching the tokens
-    },
+  const requestParams = {
+    grant_type: 'password',
+    client_id: clientId,
+    username,
+    password,
+    scope: `openid offline_access ${scopes}`,
+    response_type: 'token id_token',
+    client_info: '1', // this is undocumented but needs to be set to return client_info in the ExternalTokenResponse when caching the tokens
+  };
+
+  const formData = new FormData();
+  Object.entries(requestParams).forEach(([name, value]) =>
+    formData.set(name, value),
+  );
+
+  const tokenRequest = await fetch(`${authority}/oauth2/v2.0/token`, {
+    method: 'POST',
+    body: formData,
   });
 
-  const tokenResponse = await tokenRequest.json();
+  const externalTokens = await tokenRequest.json();
 
   // IMPORTANT: Navigate before adding the script to the page below
   // Failure to do this will result in the script executing in a non secure browser context
@@ -61,7 +69,7 @@ setup('msal-login', async ({ request, page }) => {
   // Have the msal browser library add the tokens to browser storage
   // Doing it this way will ensure that the browser storage keys have the correct schema
   const sessionStorage: string = await page.evaluate(
-    async ({ tokenResponse, authority, clientId, scopes }) => {
+    async ({ externalTokens, authority, clientId, scopes }) => {
       await (window as any).msal.loadExternalTokens(
         {
           auth: {
@@ -70,14 +78,14 @@ setup('msal-login', async ({ request, page }) => {
           },
         },
         { authority, scopes },
-        tokenResponse,
+        externalTokens,
         {},
       );
       // read and return the tokens added to sessionStorage by 'loadExternalTokens'
       // sessionStorage is set as the cache location in the msal config (see ../fixtures.ts)
       return JSON.stringify(window.sessionStorage);
     },
-    { tokenResponse, authority, clientId, scopes },
+    { externalTokens, authority, clientId, scopes },
   );
 
   const dir = path.dirname(sessionStorageFilePath);

@@ -1,6 +1,7 @@
 import { workspaceRoot } from '@nx/devkit';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
+import { loadEnvFile } from 'node:process';
 import path from 'path';
 
 // For CI, you may want to set BASE_URL to the deployed application.
@@ -8,16 +9,12 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
 
 export const SESSION_STORAGE_FILE_PATH = path.join(
   __dirname,
-  '.state/session-storage.json'
+  '.state/session-storage.json',
 );
 
 process.env['SESSION_STORAGE_FILE_PATH'] = SESSION_STORAGE_FILE_PATH;
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+loadEnvFile(path.join(__dirname, '.env'));
 
 // Config value to use for passing session storage state to tests or fixtures
 export type SessionStorageState = { sessionStorageFilePath: string };
